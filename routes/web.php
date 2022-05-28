@@ -14,9 +14,28 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
-Auth::routes();
+Auth::routes([
+    'confirm' => false,
+    'login' => true,
+    'logout' => true,
+    'register' => false,
+    'reset' => false,
+    'verify' => false
+]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::prefix('admin')->name('admin.')->middleware(['web','auth'])->group(function (){
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//    Route::resource('users', App\Http\Controllers\UserController::class);
+//    Route::get('user/status/{user}', [\App\Http\Controllers\UserController::class, 'status'])->name('user.status')->middleware('super_admin');
+//    Route::resource('students', App\Http\Controllers\StudentController::class)->middleware('adminuser');
+//    Route::resource('replace', \App\Http\Controllers\ReplaceController::class)->middleware('adminuser');
+//    Route::resource('rooms', App\Http\Controllers\RoomController::class)->middleware('adminuser');
+//    Route::resource('floors', App\Http\Controllers\FloorController::class)->middleware('adminuser');
+//    Route::resource('binos', App\Http\Controllers\BinoController::class)->middleware('admin');
+//    Route::resource('facultets', App\Http\Controllers\FacultetController::class)->middleware('admin');
+//    Route::resource('attendances', AttendanceController::class)->middleware('adminuser');
+
+});
